@@ -18,12 +18,18 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from restaurant.views import BookingViewSet
+from rest_framework.authtoken.views import obtain_auth_token
 
+# Router for BookingViewSet
 router = DefaultRouter()
-router.register(r'tables', BookingViewSet)
+router.register(r'booking', BookingViewSet)  # This matches the Booking API
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('restaurant/', include('restaurant.urls')),
-    path('restaurant/booking/', include(router.urls)),
+    # Djoser URLs for authentication and registration
+    path('restaurant/api/', include(router.urls)),
+    path('auth/', include('djoser.urls.authtoken')),  # Token login and logout URLs
+    path('api-token-auth/', obtain_auth_token),         
 ]
